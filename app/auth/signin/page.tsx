@@ -185,6 +185,9 @@ import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
 import Link from "next/link";
 import { toast } from "sonner";
+import { Suspense } from "react";
+export const dynamic = "force-dynamic";
+
 
 import {
   Box,
@@ -251,190 +254,190 @@ export default function LoginPage() {
 
   return (
     <>
-    <LoginToast/>
-    <Box
-      sx={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: { xs: "column", md: "row" },
-        background: "linear-gradient(135deg, #fdf2f8, #e0f2fe)",
-      }}
-    >
-      {/* LEFT SIDE IMAGE */}
+      <Suspense fallback={null}>
+        <LoginToast />
+      </Suspense>
       <Box
         sx={{
-          flex: 1,
-          backgroundImage:
-            "url(https://images.unsplash.com/photo-1492724441997-5dc865305da7)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          minHeight: { xs: 250, md: "100vh" },
-        }}
-      />
-
-      {/* RIGHT SIDE CONTENT */}
-      <Box
-        sx={{
-          flex: 1,
+          minHeight: "100vh",
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          p: 4,
+          flexDirection: { xs: "column", md: "row" },
+          background: "linear-gradient(135deg, #fdf2f8, #e0f2fe)",
         }}
       >
-        {/* Heading */}
-        <Box textAlign="center" mb={3}>
-          <Typography
-            variant="h4"
-            fontWeight="bold"
-            gutterBottom
-            sx={{ color: "#db2777" }}
-          >
-            Welcome Back
-          </Typography>
-          <Typography variant="body1" sx={{ color: "#db2777", opacity: 0.8 }}>
-            Login to continue to your dashboard.
-          </Typography>
-        </Box>
-
-        {/* Login Card */}
-        <Card
+        {/* LEFT SIDE IMAGE */}
+        <Box
           sx={{
-            width: 400,
-            p: 2,
-            borderRadius: 4,
-            boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+            flex: 1,
+            backgroundImage:
+              "url(https://images.unsplash.com/photo-1492724441997-5dc865305da7)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            minHeight: { xs: 250, md: "100vh" },
+          }}
+        />
+
+        {/* RIGHT SIDE CONTENT */}
+        <Box
+          sx={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            p: 4,
           }}
         >
-          <CardContent>
-            <Box
-              component="form"
-              onSubmit={handleSubmit(onSubmit)}
-              sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+          {/* Heading */}
+          <Box textAlign="center" mb={3}>
+            <Typography
+              variant="h4"
+              fontWeight="bold"
+              gutterBottom
+              sx={{ color: "#db2777" }}
             >
-              <TextField
-                label="Email"
-                fullWidth
-                {...register("email")}
-                error={!!errors.email}
-                helperText={errors.email?.message}
-              />
+              Welcome Back
+            </Typography>
+            <Typography variant="body1" sx={{ color: "#db2777", opacity: 0.8 }}>
+              Login to continue to your dashboard.
+            </Typography>
+          </Box>
 
-              <TextField
-                label="Password"
-                type="password"
-                fullWidth
-                {...register("password")}
-                error={!!errors.password}
-                helperText={errors.password?.message}
-              />
-
-              <Button
-                type="submit"
-                variant="contained"
-                size="large"
-                disabled={selector.loading}
-                sx={{
-                  mt: 1,
-                  borderRadius: 3,
-                  textTransform: "none",
-                  backgroundColor: "#db2777",
-                  "&:hover": {
-                    backgroundColor: "#be185d",
-                  },
-                }}
-              >
-                {selector.loading ? "Loading..." : "Login"}
-              </Button>
-
-              {/* Divider Line */}
+          {/* Login Card */}
+          <Card
+            sx={{
+              width: 400,
+              p: 2,
+              borderRadius: 4,
+              boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
+            }}
+          >
+            <CardContent>
               <Box
-                sx={{
-                  borderTop: "1px solid #eee",
-                  mt: 3,
-                  pt: 2,
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}
+                component="form"
+                onSubmit={handleSubmit(onSubmit)}
+                sx={{ display: "flex", flexDirection: "column", gap: 2 }}
               >
-                <Typography
-                  component={Link}
-                  href="/auth/forgotpassword"
+                <TextField
+                  label="Email"
+                  fullWidth
+                  {...register("email")}
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
+                />
+
+                <TextField
+                  label="Password"
+                  type="password"
+                  fullWidth
+                  {...register("password")}
+                  error={!!errors.password}
+                  helperText={errors.password?.message}
+                />
+
+                <Button
+                  type="submit"
+                  variant="contained"
+                  size="large"
+                  disabled={selector.loading}
                   sx={{
-                    fontSize: "14px",
-                    color: "#db2777",
-                    textDecoration: "none",
-                    fontWeight: 500,
+                    mt: 1,
+                    borderRadius: 3,
+                    textTransform: "none",
+                    backgroundColor: "#db2777",
                     "&:hover": {
-                      textDecoration: "underline",
+                      backgroundColor: "#be185d",
                     },
                   }}
                 >
-                  Forgot Password?
-                </Typography>
-                <Typography
-                  component={Link}
-                  href="/auth/update-password"
+                  {selector.loading ? "Loading..." : "Login"}
+                </Button>
+
+                {/* Divider Line */}
+                <Box
                   sx={{
-                    fontSize: "14px",
-                    color: "#db2777",
-                    textDecoration: "none",
-                    fontWeight: 500,
-                    "&:hover": {
-                      textDecoration: "underline",
-                    },
+                    borderTop: "1px solid #eee",
+                    mt: 3,
+                    pt: 2,
+                    display: "flex",
+                    justifyContent: "space-between",
                   }}
                 >
-                  Update Password
-                </Typography>
-              </Box>
-
-              {/* Register Redirect */}
-              <Box
-                sx={{
-                  mt: 2,
-                  textAlign: "center",
-                }}
-              >
-                <Typography variant="body2" sx={{ color: "#555" }}>
-                  Don't have an account?{" "}
-                  <Link
-                    href="/auth/signup"
-                    style={{
+                  <Typography
+                    component={Link}
+                    href="/auth/forgotpassword"
+                    sx={{
+                      fontSize: "14px",
                       color: "#db2777",
-                      fontWeight: 600,
                       textDecoration: "none",
+                      fontWeight: 500,
+                      "&:hover": {
+                        textDecoration: "underline",
+                      },
                     }}
                   >
-                    Register
-                  </Link>
-                </Typography>
-              </Box>
-              
-            </Box>
+                    Forgot Password?
+                  </Typography>
+                  <Typography
+                    component={Link}
+                    href="/auth/update-password"
+                    sx={{
+                      fontSize: "14px",
+                      color: "#db2777",
+                      textDecoration: "none",
+                      fontWeight: 500,
+                      "&:hover": {
+                        textDecoration: "underline",
+                      },
+                    }}
+                  >
+                    Update Password
+                  </Typography>
+                </Box>
 
-            {(message || selector.error) && (
-              <Box
-                sx={{
-                  mt: 3,
-                  p: 2,
-                  borderRadius: 2,
-                  textAlign: "center",
-                  backgroundColor: success
-                    ? "rgba(76,175,80,0.1)"
-                    : "rgba(244,67,54,0.1)",
-                  color: success ? "green" : "red",
-                }}
-              >
-                {message || selector.error}
+                {/* Register Redirect */}
+                <Box
+                  sx={{
+                    mt: 2,
+                    textAlign: "center",
+                  }}
+                >
+                  <Typography variant="body2" sx={{ color: "#555" }}>
+                    Don't have an account?{" "}
+                    <Link
+                      href="/auth/signup"
+                      style={{
+                        color: "#db2777",
+                        fontWeight: 600,
+                        textDecoration: "none",
+                      }}
+                    >
+                      Register
+                    </Link>
+                  </Typography>
+                </Box>
               </Box>
-            )}
-          </CardContent>
-        </Card>
+
+              {(message || selector.error) && (
+                <Box
+                  sx={{
+                    mt: 3,
+                    p: 2,
+                    borderRadius: 2,
+                    textAlign: "center",
+                    backgroundColor: success
+                      ? "rgba(76,175,80,0.1)"
+                      : "rgba(244,67,54,0.1)",
+                    color: success ? "green" : "red",
+                  }}
+                >
+                  {message || selector.error}
+                </Box>
+              )}
+            </CardContent>
+          </Card>
+        </Box>
       </Box>
-    </Box>
     </>
   );
-
 }
