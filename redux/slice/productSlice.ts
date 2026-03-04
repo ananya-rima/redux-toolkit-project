@@ -13,6 +13,8 @@ interface Product {
 
 interface ProductState {
   data: Product[];
+  details: Product | null;
+  total: number;
 
   page: number;
   itemsPerPage: number;
@@ -22,6 +24,8 @@ interface ProductState {
 
 const initialState: ProductState = {
   data: [],
+  details: null,
+  total: 0,
 
   page: 1,
   itemsPerPage: 8,
@@ -46,10 +50,11 @@ export const listProduct = createAsyncThunk(
   async (page: number, { rejectWithValue }) => {
     try {
       const res = await axiosInstance.get(
-        `${endPoints.product.list}?limit=8&skip=${page * 8}`,
+        `${endPoints.product.list}?limit=8&skip=${(page - 1) * 8}`,
       );
       console.log("List Product Response:", res);
       return res.data.data;
+      
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message);
     }
@@ -71,7 +76,7 @@ export const deleteProduct = createAsyncThunk(
 );
 export const updateProduct = createAsyncThunk(
   "updateProduct",
-  async ({ id, payload }:any,{rejectWithValue}) => {
+  async ({ id, payload }: any, { rejectWithValue }) => {
     try {
       const res = await axiosInstance.put(
         `${endPoints.product.update}/${id}`,
@@ -185,74 +190,85 @@ const productSlice = createSlice({
       // });
 
       // CREATE
-    .addCase(createProduct.pending, (state) => {
-      state.loading = true;
-    })
-    .addCase(createProduct.fulfilled, (state, action) => {
-      state.loading = false;
-      if (action.payload.status) {
-        state.data.push(action.payload.data);
-        toast.success(action.payload.message);
-      }
-    })
-    .addCase(createProduct.rejected, (state, action) => {
-      state.loading = false;
-      toast.error(action.payload as string);
-    })
+      .addCase(createProduct.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        if (action.payload.status) {
+          state.data.push(action.payload.data);
+          toast.success(action.payload.message);
+        }
+      })
+      .addCase(createProduct.rejected, (state, action) => {
+        state.loading = false;
+        toast.error(action.payload as string);
+      })
 
-    // LIST
-    .addCase(listProduct.pending, (state) => {
-      state.loading = true;
-    })
-    .addCase(listProduct.fulfilled, (state, action) => {
-      state.data = action.payload;
-      state.loading = false;
-    })
-    .addCase(listProduct.rejected, (state, action) => {
-      state.loading = false;
-      toast.error(action.payload as string);
-    })
+      // LIST
+      .addCase(listProduct.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(listProduct.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.loading = false;
+        state.total = action.payload.total;
+      })
+      .addCase(listProduct.rejected, (state, action) => {
+        state.loading = false;
+        toast.error(action.payload as string);
+      })
 
-    // DELETE
-    .addCase(deleteProduct.pending, (state) => {
-      state.loading = true;
-    })
-    .addCase(deleteProduct.fulfilled, (state, action) => {
-      state.loading = false;
-      state.data = state.data.filter(
-        (prod) => prod._id !== action.payload
-      );
-      toast.success("Product deleted successfully!");
-    })
-    .addCase(deleteProduct.rejected, (state, action) => {
-      state.loading = false;
-      toast.error(action.payload as string);
-    })
+      // DELETE
+      .addCase(deleteProduct.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = state.data.filter((prod) => prod._id !== action.payload);
+        toast.success("Product deleted successfully!");
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.loading = false;
+        toast.error(action.payload as string);
+      })
 
-    // UPDATE
-    .addCase(updateProduct.pending, (state) => {
-      state.loading = true;
-    })
-    .addCase(updateProduct.fulfilled, (state, action) => {
-      state.loading = false;
-      toast.success("Product updated successfully!");
-    })
-    .addCase(updateProduct.rejected, (state, action) => {
-      state.loading = false;
-      toast.error(action.payload as string);
-    })
+      // UPDATE
+      .addCase(updateProduct.pending, (state) => {
+        state.loading = true;
+      })
 
-    // DETAILS
-    .addCase(productDetails.pending, (state) => {
-      state.loading = true;
-    })
-    .addCase(productDetails.fulfilled, (state, action) => {
-      state.loading = false;
-    })
-    .addCase(productDetails.rejected, (state, action) => {
-      state.loading = false;
-      toast.error(action.payload as string);
-    });
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        state.loading = false;
+
+        const updatedProduct = action.payload.data; // ✅ backend response
+        const id = updatedProduct._id; // ✅ safe id
+
+        if (Array.isArray(state.data)) {
+          state.data = state.data.map((item) =>
+            item._id === id ? updatedProduct : item,
+          );
+        }
+
+        toast.success("Product updated successfully!");
+      })
+      .addCase(updateProduct.rejected, (state, action) => {
+        state.loading = false;
+        toast.error(action.payload as string);
+      })
+
+      // DETAILS
+      .addCase(productDetails.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(productDetails.fulfilled, (state, action) => {
+        state.loading = false;
+        state.details = action.payload;
+      })
+      .addCase(productDetails.rejected, (state, action) => {
+        state.loading = false;
+        toast.error(action.payload as string);
+      });
   },
 });
 

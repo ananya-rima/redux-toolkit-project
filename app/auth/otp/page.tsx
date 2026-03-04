@@ -1,123 +1,3 @@
-// "use client"
-// import { authOtp} from '@/redux/slice/authSlice';
-// import { useRouter } from 'next/navigation';
-// import { useEffect, useState } from 'react'
-// import { useDispatch, useSelector } from 'react-redux'
-
-// export default function OtpPage() {
-
-//     const dispatch = useDispatch();
-//     const router = useRouter()
-//     const { email, isOtpVerified } = useSelector(
-//     (state) => state.auth);
-    
-
-//   const [userId, setUserId] = useState("");
-
-//  useEffect(() => {
-//   const id = localStorage.getItem("Id");
-//    if (id) {
-//     setUserId(id);
-//    }
-//  }, []);
-
-//  const handleChange =(e,index) => {
-//     const value = e.target.value.replace(/\D/g, "").slice(-1)
-//     e.target.value = value
-    
-
-//     // If a valid digit is entered, move focus to next box
-//     if (value && index < 5) {
-//       const nextInput = document.getElementById(`otp-${index + 1}`);
-//       if (nextInput) nextInput.focus();
-//     }
-//   }
-
- 
-
-//  const handleSubmit = async (e: React.FormEvent) => {
-//   e.preventDefault();
-
-//   // Collect OTP from inputs
-//   let otpValue = "";
-//   for (let i = 0; i < 6; i++) {
-//     const input = document.getElementById(`otp-${i}`) as HTMLInputElement;
-//     otpValue += input?.value || "";
-//   }
-
-//   // Prepare payload
-//   const payload = {
-//     userId: localStorage.getItem("Id"),
-//     otp: otpValue,
-//   };
-
-//   // Dispatch thunk
-//   try{
-//       const result = await dispatch(authOtp(payload)).unwrap();
-//       console.log(result,"otp response");
-//       if(result.status == true){
-//         router.push("/auth/signin")
-//       }
-//   }catch(error){
-
-//   }
-  
-
-//   // Handle success
-//   // if (authOtp.fulfilled.match(result)) {
-//   //   alert("OTP Verified Successfully");
-//   //   router.push("/"); // or dashboard
-//   // }
-
-//   // // Handle error
-//   // if (authOtp.rejected.match(result)) {
-//   //   alert(result.payload || "OTP verification failed");
-//   // }
-// };
-
-
-
-//   return (
-//     <div style={{display:"flex", justifyContent:"center", alignItems:"center", height:"100vh"}}>
-//    <div style={{ textAlign: "center",height:"300px" , width:"500px", backgroundColor:"#637aa8ff",
-//    padding:"30px", borderRadius:"5px",margin:"auto", alignItems:"center"}}>
-//       <h2 style={{fontSize:"28px", marginBottom:30}}><u>OTP Verification</u></h2>
-//       <p style={{fontSize:"20px", marginBottom:20}}>
-//          Mail Id : <strong>{email}</strong>
-//       </p>
-
-//       <form onSubmit={handleSubmit}>
-//         <div style={{ display: "flex", justifyContent: "center", gap: "3px" }}>
-//           {Array.from({ length: 6 }).map((_, index) => (
-//             <input
-//               key={index}
-//               id={`otp-${index}`}
-//               type="text"
-//               maxLength="1"
-//               onChange={(e) => handleChange(e, index)}
-//               autoFocus={index === 0}
-//               style={{
-//                 width: "40px",
-//                 height: "40px",
-//                 textAlign: "center",
-//                 fontSize: "20px",
-//                 borderRadius: "5px",
-//                 border: "1px solid white" ,
-//               }}
-//             />
-//           ))}
-//         </div>
-
-//         <br />
-//         <button type="submit" style={{ padding: "10px 20px", backgroundColor:"#353131", borderRadius:10, marginTop:20}}>
-//           Verify OTP
-//         </button>
-//       </form>
-//     </div>
-//     </div>
-//   )
-// }
-
 
 
 "use client";
@@ -134,12 +14,13 @@ import {
   Typography,
   TextField,
 } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 export default function OtpPage() {
   const dispatch = useDispatch();
   const router = useRouter();
   const { email, userId } = useSelector((state: any) => state.auth);
-  
+  const [loading, setLoading] = useState(false);
 
   // const [userId,, setUserId] = useState("");
 
@@ -150,14 +31,14 @@ export default function OtpPage() {
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number,
   ) => {
     const value = e.target.value.replace(/\D/g, "").slice(-1);
     e.target.value = value;
 
     if (value && index < 5) {
       const nextInput = document.getElementById(
-        `otp-${index + 1}`
+        `otp-${index + 1}`,
       ) as HTMLInputElement;
       nextInput?.focus();
     }
@@ -168,9 +49,7 @@ export default function OtpPage() {
 
     let otpValue = "";
     for (let i = 0; i < 6; i++) {
-      const input = document.getElementById(
-        `otp-${i}`
-      ) as HTMLInputElement;
+      const input = document.getElementById(`otp-${i}`) as HTMLInputElement;
       otpValue += input?.value || "";
     }
 
@@ -194,8 +73,7 @@ export default function OtpPage() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        background:
-          "linear-gradient(135deg, #fdf2f8 0%, #e0f2fe 100%)",
+        background: "linear-gradient(135deg, #fdf2f8 0%, #e0f2fe 100%)",
       }}
     >
       <Card
@@ -257,11 +135,12 @@ export default function OtpPage() {
               ))}
             </Box>
 
-            <Button
+            <LoadingButton
               type="submit"
               fullWidth
               variant="contained"
               size="large"
+              loading={loading}
               sx={{
                 backgroundColor: "#db2777",
                 borderRadius: 2,
@@ -273,7 +152,7 @@ export default function OtpPage() {
               }}
             >
               Verify OTP
-            </Button>
+            </LoadingButton>
           </Box>
         </CardContent>
       </Card>

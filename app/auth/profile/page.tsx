@@ -1,63 +1,3 @@
-// "use client";
-
-// import { useSelector } from "react-redux";
-// import { Box, Card, CardContent, Typography, Avatar } from "@mui/material";
-
-// export default function ProfilePage() {
-//   // Fetch user info from Redux
-//   const { email, userId, token, image } = useSelector((state: any) => state.auth);
-
-//   // For demo, username from email
-//   const username = email?.split("@")[0] || "User";
-
-//   return (
-//     <Box
-//       sx={{
-//         minHeight: "100vh",
-//         display: "flex",
-//         justifyContent: "center",
-//         alignItems: "center",
-//         background: "linear-gradient(135deg, #fdf2f8 0%, #e0f2fe 100%)",
-//         p: 2,
-//       }}
-//     >
-//       <Card
-//         sx={{
-//           width: 400,
-//           p: 3,
-//           borderRadius: 4,
-//           textAlign: "center",
-//           backdropFilter: "blur(10px)",
-//           background: "rgba(255,255,255,0.9)",
-//         }}
-//       >
-//         {/* <Avatar
-//           src={`/uploads/${userId}.png`} // or from registration payload
-//           alt={username}
-//           sx={{ width: 100, height: 100, mx: "auto", mb: 2 }}
-//         /> */}
-
-//         <Avatar
-//           src={image ? `http://localhost:4000/${image}` : "/image.jpeg"}
-//           alt={username}
-//           sx={{ width: 100, height: 100, mx: "auto", mb: 2 }}
-//         />
-
-//         <CardContent>
-//           <Typography variant="h5" fontWeight="bold" sx={{ mb: 1 }}>
-//             {username}
-//           </Typography>
-//           <Typography variant="body1" sx={{ mb: 1 }}>
-//             Email: {email}
-//           </Typography>
-//           <Typography variant="body2" color="text.secondary">
-//             User ID: {userId}
-//           </Typography>
-//         </CardContent>
-//       </Card>
-//     </Box>
-//   );
-// }
 
 
 "use client";
@@ -71,6 +11,8 @@ export default function ProfilePage() {
 
   // For demo, username from email
   const username = email?.split("@")[0] || "User";
+  console.log("Auth State:", { email, token, userId, image });
+  console.log("username",username);
 
   return (
     <Box

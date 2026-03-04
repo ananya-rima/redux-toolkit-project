@@ -1,239 +1,165 @@
 
 
-// "use client";
-
-// import { useEffect } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { useRouter } from "next/navigation";
-// import {
-//   Box,
-//   Typography,
-//   Button,
-//   Table,
-//   TableBody,
-//   TableCell,
-//   TableContainer,
-//   TableHead,
-//   TableRow,
-//   Paper,
-//   CircularProgress,
-// } from "@mui/material";
-// import { listProduct, deleteProduct } from "@/redux/slice/productSlice";
-// import type { AppDispatch, RootState } from "@/redux/store/store";
-
-// export default function ProductList() {
-//   const dispatch = useDispatch<AppDispatch>();
-//   const router = useRouter();
-
-//   const { products, loading } = useSelector(
-//     (state: RootState) => state.product
-//   );
-
-//   useEffect(() => {
-//     dispatch(listProduct());
-//   }, [dispatch]);
-
-//   const handleDelete = (id: string) => {
-//     dispatch(deleteProduct(id));
-//   };
-
-//   return (
-//     <Box
-      
-//         // width: "100%",
-//         // maxWidth: "1200px",
-//         // mx: "auto",
-//         // mt: 4,
-//         // px: 2,
-//         sx={{
-//         width: "100%",
-//         maxWidth: "1200px",
-//         margin: "0 auto",
-//         padding: "20px",
-//         overflow: "hidden", // 🔥 prevents page overflow
-//       }}
-//     >
-//       <Typography variant="h4" sx={{ mb: 3, fontWeight: 600 }}>
-//         Product List
-//       </Typography>
-
-//       <Button
-//         variant="contained"
-//         sx={{ mb: 2 }}
-//         onClick={() => router.push("/create-product")}
-//       >
-//         Create Product
-//       </Button>
-
-//       {loading ? (
-//         <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-//           <CircularProgress />
-//         </Box>
-//       ) : (
-//         <TableContainer
-//           component={Paper}
-//           sx={{
-//             width: "100%",
-//             overflowX: "auto",   // 🔥 Important: prevents overflow
-//           }}
-//         >
-//           <Table>
-//             <TableHead>
-//               <TableRow>
-//                 <TableCell>Sl</TableCell>
-//                 <TableCell>Name</TableCell>
-//                 <TableCell>Price</TableCell>
-//                 <TableCell>Category</TableCell>
-//                 <TableCell align="center">Actions</TableCell>
-//               </TableRow>
-//             </TableHead>
-
-//             <TableBody>
-//               {products?.length === 0 ? (
-//                 <TableRow>
-//                   <TableCell colSpan={5} align="center">
-//                     No Products Found
-//                   </TableCell>
-//                 </TableRow>
-//               ) : (
-//                 products?.map((product: any, index: number) => (
-//                   <TableRow key={product._id}>
-//                     <TableCell>{index + 1}</TableCell>
-//                     <TableCell>{product.name}</TableCell>
-//                     <TableCell>₹ {product.price}</TableCell>
-//                     <TableCell>{product.category}</TableCell>
-//                     <TableCell align="center">
-//                       <Button
-//                         size="small"
-//                         variant="outlined"
-//                         sx={{ mr: 1 }}
-//                         onClick={() =>
-//                           router.push(`/edit-product/${product._id}`)
-//                         }
-//                       >
-//                         Edit
-//                       </Button>
-
-//                       <Button
-//                         size="small"
-//                         variant="contained"
-//                         color="error"
-//                         onClick={() => handleDelete(product._id)}
-//                       >
-//                         Delete
-//                       </Button>
-//                     </TableCell>
-//                   </TableRow>
-//                 ))
-//               )}
-//             </TableBody>
-//           </Table>
-//         </TableContainer>
-//       )}
-//     </Box>
-//   );
-// }
 
 "use client";
 
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { listProduct, deleteProduct } from "@/redux/slice/productSlice";
 import {
   Box,
-  Container,
-  Grid,
-  Card,
-  CardContent,
+  Paper,
   Typography,
+  TextField,
   Button,
-  CircularProgress,
+  Stack,
 } from "@mui/material";
+import { useEffect, useRef } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useParams, useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  productDetails,
+  updateProduct,
+} from "@/redux/slice/productSlice";
 
-export default function ProductList() {
-  const dispatch = useDispatch<any>();
-  const { data, loading, page } = useSelector(
-    (state: any) => state.product
-  );
+const schema = yup.object().shape({
+  title: yup.string().required("Title is required"),
+  subtitle: yup.string().required("Subtitle is required"),
+  content: yup.string().required("Content is required"),
+});
+
+export default function UpdateProduct() {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const {details} = useSelector((state: any) => state.product);
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const hasFetched = useRef(false);
+  // useEffect(() => {
+  //   if (id) {
+  //     dispatch<any>(productDetails(id));
+  //   }
+  // }, [id, dispatch]);
 
   useEffect(() => {
-    dispatch(listProduct(page));
-  }, [dispatch, page]);
+  if (id && !hasFetched.current) {
+    dispatch(productDetails(id));
+    hasFetched.current = true;
+  }
+}, [id]);
+
+  useEffect(() => {
+    if (details) {
+      setValue("title", details.title || "");
+      setValue("subtitle", details.subtitle || "");
+      setValue("content", details.content || "");
+    }
+  }, [details, setValue]);
+
+  const handleUpdate = async (data: any) => {
+    const updateData = {
+      title: data.title,
+      subtitle: data.subtitle,
+      content: data.content,
+    };
+    console.log("ID:", id);
+  console.log("Sending updateData:", updateData);
+
+    const result=await dispatch<any>(updateProduct({ id, payload: updateData }));
+     console.log("Update Result:", result);
+    if (result.meta.requestStatus === "fulfilled"){
+      router.push("/crud/productlist")
+    };
+  };
 
   return (
     <Box
       sx={{
         minHeight: "100vh",
-        overflowX: "hidden", // 👈 prevents horizontal overflow
-        py: 5,
-        backgroundColor: "#f9fafb",
+        background: "linear-gradient(135deg, #fdf2f8, #e0f2fe)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        p: 4,
       }}
     >
-      <Container maxWidth="lg">
+      <Paper
+        elevation={8}
+        sx={{
+          width: 500,
+          p: 5,
+          borderRadius: 4,
+          background: "#ffffff",
+        }}
+      >
         <Typography
           variant="h4"
-          sx={{ fontWeight: "bold", mb: 4, textAlign: "center" }}
+          fontWeight="bold"
+          textAlign="center"
+          mb={4}
+          sx={{
+            color: "#db2777",
+            letterSpacing: 1,
+          }}
         >
-          Product List
+          Update Product
         </Typography>
 
-        {loading ? (
-          <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <CircularProgress />
-          </Box>
-        ) : (
-          <Grid container spacing={3}>
-            {data?.map((item: any) => (
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={4}
-                lg={3}
-                key={item._id}
-              >
-                <Card
-                  sx={{
-                    height: "100%",
-                    borderRadius: 3,
-                    boxShadow: 3,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <CardContent>
-                    <Typography variant="h6" fontWeight="bold">
-                      {item.title}
-                    </Typography>
+        <form onSubmit={handleSubmit(handleUpdate)}>
+          <Stack spacing={3}>
+            <TextField
+              label="Title"
+              fullWidth
+              {...register("title")}
+              error={!!errors.title}
+              helperText={errors.title?.message}
+            />
 
-                    <Typography variant="body2" sx={{ my: 1 }}>
-                      {item.subtitle}
-                    </Typography>
+            <TextField
+              label="Subtitle"
+              fullWidth
+              {...register("subtitle")}
+              error={!!errors.subtitle}
+              helperText={errors.subtitle?.message}
+            />
 
-                    <Typography variant="body2" color="text.secondary">
-                      {item.content}
-                    </Typography>
-                  </CardContent>
+            <TextField
+              label="Content"
+              multiline
+              rows={4}
+              fullWidth
+              {...register("content")}
+              error={!!errors.content}
+              helperText={errors.content?.message}
+            />
 
-                  <Box sx={{ p: 2 }}>
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      color="error"
-                      onClick={() =>
-                        dispatch(deleteProduct(item._id))
-                      }
-                    >
-                      Delete
-                    </Button>
-                  </Box>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        )}
-      </Container>
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{
+                background: "#db2777",
+                py: 1.3,
+                fontWeight: "bold",
+                "&:hover": {
+                  background: "#be185d",
+                },
+              }}
+            >
+              Finish Update
+            </Button>
+          </Stack>
+        </form>
+      </Paper>
     </Box>
   );
 }
