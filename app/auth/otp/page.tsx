@@ -22,12 +22,7 @@ export default function OtpPage() {
   const { email, userId } = useSelector((state: any) => state.auth);
   const [loading, setLoading] = useState(false);
 
-  // const [userId,, setUserId] = useState("");
-
-  // useEffect(() => {
-  //   const id = localStorage.getItem("Id");
-  //   if (id) setUserId(id);
-  // }, []);
+  
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,

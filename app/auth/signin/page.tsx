@@ -59,7 +59,7 @@ export default function LoginPage() {
       }
     }, [searchParams]);
 
-    return null; // just for toast
+    return null; 
   }
 
   const onSubmit = async (data: any) => {
@@ -90,7 +90,7 @@ export default function LoginPage() {
           background: "linear-gradient(135deg, #fdf2f8, #e0f2fe)",
         }}
       >
-        {/* LEFT SIDE IMAGE */}
+       
         <Box
           sx={{
             flex: 1,
@@ -102,7 +102,7 @@ export default function LoginPage() {
           }}
         />
 
-        {/* RIGHT SIDE CONTENT */}
+       
         <Box
           sx={{
             flex: 1,
@@ -113,7 +113,7 @@ export default function LoginPage() {
             p: 4,
           }}
         >
-          {/* Heading */}
+          
           <Box textAlign="center" mb={3}>
             <Typography
               variant="h4"
@@ -128,7 +128,7 @@ export default function LoginPage() {
             </Typography>
           </Box>
 
-          {/* Login Card */}
+         
           <Card
             sx={{
               width: 400,
@@ -178,7 +178,7 @@ export default function LoginPage() {
                   {selector.loading ? "Loading..." : "Login"}
                 </Button>
 
-                {/* Divider Line */}
+                
                 <Box
                   sx={{
                     borderTop: "1px solid #eee",
@@ -205,7 +205,7 @@ export default function LoginPage() {
                   </Typography>
                 </Box>
 
-                {/* Register Redirect */}
+                
                 <Box
                   sx={{
                     mt: 2,

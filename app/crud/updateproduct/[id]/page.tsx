@@ -1,6 +1,3 @@
-
-
-
 "use client";
 
 import {
@@ -17,10 +14,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useParams, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  productDetails,
-  updateProduct,
-} from "@/redux/slice/productSlice";
+import { productDetails, updateProduct } from "@/redux/slice/productSlice";
 
 const schema = yup.object().shape({
   title: yup.string().required("Title is required"),
@@ -33,7 +27,7 @@ export default function UpdateProduct() {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const {details} = useSelector((state: any) => state.product);
+  const { details } = useSelector((state: any) => state.product);
 
   const {
     register,
@@ -45,18 +39,13 @@ export default function UpdateProduct() {
   });
 
   const hasFetched = useRef(false);
-  // useEffect(() => {
-  //   if (id) {
-  //     dispatch<any>(productDetails(id));
-  //   }
-  // }, [id, dispatch]);
 
   useEffect(() => {
-  if (id && !hasFetched.current) {
-    dispatch(productDetails(id));
-    hasFetched.current = true;
-  }
-}, [id]);
+    if (id && !hasFetched.current) {
+      dispatch(productDetails(id));
+      hasFetched.current = true;
+    }
+  }, [id]);
 
   useEffect(() => {
     if (details) {
@@ -73,13 +62,15 @@ export default function UpdateProduct() {
       content: data.content,
     };
     console.log("ID:", id);
-  console.log("Sending updateData:", updateData);
+    console.log("Sending updateData:", updateData);
 
-    const result=await dispatch<any>(updateProduct({ id, payload: updateData }));
-     console.log("Update Result:", result);
-    if (result.meta.requestStatus === "fulfilled"){
-      router.push("/crud/productlist")
-    };
+    const result = await dispatch<any>(
+      updateProduct({ id, payload: updateData }),
+    );
+    console.log("Update Result:", result);
+    if (result.meta.requestStatus === "fulfilled") {
+      router.push("/crud/productlist");
+    }
   };
 
   return (

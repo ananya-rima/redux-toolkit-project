@@ -58,7 +58,7 @@ export default function Navbar() {
             MyApp
           </Typography>
 
-          {/* Show Avatar Only If Logged In */}
+          
           {token && (
             <>
               <IconButton onClick={handleMenuOpen} size="small">

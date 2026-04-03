@@ -57,7 +57,7 @@ export default function CreateProduct() {
   const handleAddItem = async (data: ProductForm) => {
     const result: any = await dispatch(createProduct(data));
     if (result.payload.status === true) {
-      // reset();
+     
       reset({
         title: "",
         subtitle: "",
@@ -81,7 +81,7 @@ export default function CreateProduct() {
     <Box
       sx={{
         minHeight: "100vh",
-        background: "linear-gradient(135deg, #fdf2f8, #e0f2fe)", // soft pink full page
+        background: "linear-gradient(135deg, #fdf2f8, #e0f2fe)", 
         display: "flex",
         alignItems: "center",
         justifyContent: "center",

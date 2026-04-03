@@ -12,8 +12,8 @@ interface AuthState {
   loading: boolean;
   error: string | null;
   success: string | boolean | null;
-  name: string | null; // add name to state
-  image: string | null; // add image to state if you have profile images
+  name: string | null; 
+  image: string | null; 
 }
 interface DecodedToken {
   id: string;
@@ -30,11 +30,11 @@ const initialState: AuthState = {
   loading: false,
   error: null,
   success: null,
-  name: null, // add name to state
-  image: null, // add image to state if you have profile images
+  name: null, 
+  image: null, 
 };
 
-// ✅ Registration
+
 export const authRegistration = createAsyncThunk(
   "auth/registration",
   async (
@@ -52,7 +52,7 @@ export const authRegistration = createAsyncThunk(
   },
 );
 
-// ✅ OTP Verification
+
 export const authOtp = createAsyncThunk(
   "auth/otp",
   async (payload: { userId: string; otp: string }, { rejectWithValue }) => {
@@ -67,7 +67,7 @@ export const authOtp = createAsyncThunk(
   },
 );
 
-// ✅ Login
+
 export const authLogin = createAsyncThunk(
   "auth/login",
   async (payload: { email: string; password: string }, { rejectWithValue }) => {
@@ -80,7 +80,7 @@ export const authLogin = createAsyncThunk(
   },
 );
 
-// 🔹 Forgot Password (Reset Email)
+
 export const resetEmail = createAsyncThunk(
   "auth/resetEmail",
   async (payload: { email: string }, { rejectWithValue }) => {
@@ -98,7 +98,7 @@ export const resetEmail = createAsyncThunk(
   },
 );
 
-// 🔹 Reset Password (from link)
+
 export const resetPassword = createAsyncThunk(
   "auth/resetPassword",
   async (
@@ -129,7 +129,7 @@ export const resetPassword = createAsyncThunk(
   },
 );
 
-// 🔹 Update Password (logged-in user)
+
 export const updatePassword = createAsyncThunk(
   "auth/updatePassword",
   async (
@@ -180,7 +180,7 @@ const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Registration
+    
     builder
       .addCase(authRegistration.pending, (state) => {
         state.loading = true;
@@ -217,8 +217,8 @@ const authSlice = createSlice({
         state.loading = false;
         if (action.payload.status) {
           state.isOtpVerified = true;
-          state.email = action.payload.email; // store email if needed
-          state.userId = action.payload.userId; // store userId if needed
+          state.email = action.payload.email; 
+          state.userId = action.payload.userId; 
 
           toast.success(action.payload.message);
         }
@@ -229,7 +229,7 @@ const authSlice = createSlice({
         toast.error(action.payload);
       });
 
-    // Login
+    
     builder
       .addCase(authLogin.pending, (state) => {
         state.loading = true;
@@ -261,7 +261,7 @@ const authSlice = createSlice({
         toast.error(action.payload);
       });
 
-    // Reset Email
+    
     builder
       .addCase(resetEmail.pending, (state) => {
         state.loading = true;
@@ -278,7 +278,7 @@ const authSlice = createSlice({
         toast.error(action.payload);
       });
 
-    // Reset Password (via link)
+    
     builder
       .addCase(resetPassword.pending, (state) => {
         state.loading = true;
@@ -295,7 +295,7 @@ const authSlice = createSlice({
         toast.error(action.payload);
       });
 
-    // Update Password
+    
     builder
       .addCase(updatePassword.pending, (state) => {
         state.loading = true;

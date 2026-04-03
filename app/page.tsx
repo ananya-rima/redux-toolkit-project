@@ -63,7 +63,7 @@ export default function Home() {
         </Typography>
         
         {!token ? (
-          // NOT LOGGED IN → only Login
+         
           <LoadingButton
             loading={loginLoading}
             variant="outlined"
@@ -86,7 +86,7 @@ export default function Home() {
             Login
           </LoadingButton>
         ) : (
-          // LOGGED IN → Create Product + Logout
+         
           <>
             <LoadingButton
               loading={createLoading}

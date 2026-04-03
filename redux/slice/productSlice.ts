@@ -68,7 +68,7 @@ export const deleteProduct = createAsyncThunk(
       const response = await axiosInstance.delete(
         `${endPoints.product.delete}/${id}`,
       );
-      return id; // 👈 return deleted product id
+      return id; 
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || "Delete failed");
     }
@@ -121,75 +121,8 @@ const productSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      // .addCase(createProduct.pending, (state, { payload }) => {
-      //   state.loading=true;
-      // })
-
-      // .addCase(createProduct.fulfilled, (state, { payload }) => {
-      //   if (payload.status == true) {
-      //     state.data.push(payload.data);
-      //     toast.success(payload.message);
-      //   }
-      // })
-
-      // .addCase(createProduct.rejected, (state, { payload }) => {
-      //   toast.error(payload.message);
-      // })
-
-      // /// product list
-
-      // .addCase(listProduct.pending, (state, { payload }) => {
-      //   state.loading = true;
-      // })
-
-      // .addCase(listProduct.fulfilled, (state, { payload }) => {
-      //   state.data = payload;
-      //   state.loading = false;
-      // })
-
-      // .addCase(listProduct.rejected, (state, { payload }) => {
-      //   toast.error(payload.message);
-      //   state.loading = false;
-      // })
-
-      // /// delete product
-
-      // .addCase(deleteProduct.pending, (state, { payload }) => {})
-      // .addCase(deleteProduct.fulfilled, (state, { payload }) => {
-      //   if (payload) {
-      //     state.data = state.data.filter((prod) => prod._id !== payload);
-      //     toast.success("Product deleted successfully!!!");
-      //   }
-      // })
-      // .addCase(deleteProduct.rejected, (state, { payload }) => {
-      //   toast.error("Unable to delete!!!");
-      // })
-
-      // // search data
-
-      // .addCase(updateProduct.pending, (state, { payload }) => {})
-
-      // .addCase(updateProduct.fulfilled, (state, { payload }) => {
-      //   state.data = payload;
-      // })
-
-      // .addCase(updateProduct.rejected, (state, { payload }) => {
-      //   toast.error(payload.message);
-      // })
-
-      // .addCase(productDetails.pending, (state, { payload }) => {})
-
-      // .addCase(productDetails.fulfilled, (state, { payload }) => {
-      //   // You can handle the fulfilled state if needed
-      //   state.data = payload;
-      //   state.loading = false;
-      // })
-
-      // .addCase(productDetails.rejected, (state, { payload }) => {
-      //   toast.error(payload.message);
-      // });
-
-      // CREATE
+      
+      
       .addCase(createProduct.pending, (state) => {
         state.loading = true;
       })
@@ -205,7 +138,7 @@ const productSlice = createSlice({
         toast.error(action.payload as string);
       })
 
-      // LIST
+      
       .addCase(listProduct.pending, (state) => {
         state.loading = true;
       })
@@ -219,7 +152,7 @@ const productSlice = createSlice({
         toast.error(action.payload as string);
       })
 
-      // DELETE
+      
       .addCase(deleteProduct.pending, (state) => {
         state.loading = true;
       })
@@ -233,7 +166,7 @@ const productSlice = createSlice({
         toast.error(action.payload as string);
       })
 
-      // UPDATE
+     
       .addCase(updateProduct.pending, (state) => {
         state.loading = true;
       })
@@ -241,8 +174,8 @@ const productSlice = createSlice({
       .addCase(updateProduct.fulfilled, (state, action) => {
         state.loading = false;
 
-        const updatedProduct = action.payload.data; // ✅ backend response
-        const id = updatedProduct._id; // ✅ safe id
+        const updatedProduct = action.payload.data; 
+        const id = updatedProduct._id; 
 
         if (Array.isArray(state.data)) {
           state.data = state.data.map((item) =>
@@ -257,7 +190,7 @@ const productSlice = createSlice({
         toast.error(action.payload as string);
       })
 
-      // DETAILS
+      
       .addCase(productDetails.pending, (state) => {
         state.loading = true;
       })

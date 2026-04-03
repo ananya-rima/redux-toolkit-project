@@ -41,9 +41,6 @@ export default function ListPage() {
   const [deleteId, setDeleteId] = useState("");
   const [open, setOpen] = useState(false);
 
-  // useEffect(() => {
-  //   dispatch(listProduct(page));
-  // }, [dispatch, page]);
   useEffect(() => {
     dispatch(listProduct());
   }, []);
@@ -74,7 +71,6 @@ export default function ListPage() {
     : [];
   const totalPages = Math.ceil(filterData.length / itemsPerPage);
 
-  //....new...//
   const start = (page - 1) * itemsPerPage;
   const end = start + itemsPerPage;
   const paginatedData = filterData.slice(start, end);
@@ -90,25 +86,12 @@ export default function ListPage() {
       <Paper
         elevation={6}
         sx={{
-          // maxWidth: 1000,
-          // mx: "auto",
-          // p: 4,
-          // borderRadius: 4,
-          maxWidth: { xs: "100%", md: 1000 }, // full width on small screens
+          maxWidth: { xs: "100%", md: 1000 },
           mx: "auto",
           p: { xs: 2, md: 4 },
           borderRadius: 4,
         }}
       >
-        {/* <Typography
-          variant="h4"
-          fontWeight="bold"
-          mb={3}
-          sx={{ color: "#db2777" }}
-        >
-          Product Dashboard
-        </Typography> */}
-
         <Box
           display="flex"
           justifyContent="space-between"
@@ -141,7 +124,6 @@ export default function ListPage() {
           </Button>
         </Box>
 
-        {/* Search */}
         <Autocomplete
           options={data}
           getOptionLabel={(option: any) => option.title}
@@ -152,84 +134,84 @@ export default function ListPage() {
           sx={{ mb: 3, width: 300 }}
         />
 
-        {/* Table */}
         <Box sx={{ overflowX: "auto" }}>
-        <Table>
-          <TableHead>
-            <TableRow sx={{ background: "#fbcfe8" }}>
-              <TableCell>
-                <strong>SL</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Title</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Subtitle</strong>
-              </TableCell>
-              <TableCell>
-                <strong>Content</strong>
-              </TableCell>
-              <TableCell align="center">
-                <strong>Actions</strong>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {filterData.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={5} align="center">
-                  No products found
+          <Table>
+            <TableHead>
+              <TableRow sx={{ background: "#fbcfe8" }}>
+                <TableCell>
+                  <strong>SL</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Title</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Subtitle</strong>
+                </TableCell>
+                <TableCell>
+                  <strong>Content</strong>
+                </TableCell>
+                <TableCell align="center">
+                  <strong>Actions</strong>
                 </TableCell>
               </TableRow>
-            ) : (
-              paginatedData.map((item: any, index: number) => (
-                <TableRow key={item._id} hover>
-                  <TableCell>{start + index + 1}</TableCell>
-                  <TableCell>{item.title}</TableCell>
-                  <TableCell>{item.subtitle}</TableCell>
-                  <TableCell>{item.content}</TableCell>
+            </TableHead>
 
-                  <TableCell align="center">
-                    <Stack direction="row" spacing={1} justifyContent="center">
-                      {/* Edit Icon */}
-                      <Link href={`/crud/updateproduct/${item._id}`}>
-                        <Tooltip title="Edit Product">
-                          <IconButton
-                            sx={{
-                              color: "#334155",
-                              "&:hover": { backgroundColor: "#e2e8f0" },
-                            }}
-                          >
-                            <EditIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </Link>
-
-                      {/* Delete Icon */}
-                      <Tooltip title="Delete Product">
-                        <IconButton
-                          onClick={() => handleDeleteClick(item._id)}
-                          sx={{
-                            color: "#be123c",
-                            transition: "all 0.2s ease",
-                            "&:hover": { backgroundColor: "#ffe4e6" },
-                            transform: "scale(1.08)",
-                          }}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </Stack>
+            <TableBody>
+              {filterData.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={5} align="center">
+                    No products found
                   </TableCell>
                 </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
+              ) : (
+                paginatedData.map((item: any, index: number) => (
+                  <TableRow key={item._id} hover>
+                    <TableCell>{start + index + 1}</TableCell>
+                    <TableCell>{item.title}</TableCell>
+                    <TableCell>{item.subtitle}</TableCell>
+                    <TableCell>{item.content}</TableCell>
+
+                    <TableCell align="center">
+                      <Stack
+                        direction="row"
+                        spacing={1}
+                        justifyContent="center"
+                      >
+                        <Link href={`/crud/updateproduct/${item._id}`}>
+                          <Tooltip title="Edit Product">
+                            <IconButton
+                              sx={{
+                                color: "#334155",
+                                "&:hover": { backgroundColor: "#e2e8f0" },
+                              }}
+                            >
+                              <EditIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </Link>
+
+                        <Tooltip title="Delete Product">
+                          <IconButton
+                            onClick={() => handleDeleteClick(item._id)}
+                            sx={{
+                              color: "#be123c",
+                              transition: "all 0.2s ease",
+                              "&:hover": { backgroundColor: "#ffe4e6" },
+                              transform: "scale(1.08)",
+                            }}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </Stack>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
         </Box>
 
-        {/* Pagination */}
         <Stack
           direction="row"
           spacing={3}
@@ -255,7 +237,6 @@ export default function ListPage() {
         </Stack>
       </Paper>
 
-      {/* Delete Modal */}
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>Are you sure you want to delete this product?</DialogTitle>
 
@@ -276,4 +257,3 @@ export default function ListPage() {
     </Box>
   );
 }
-

@@ -86,7 +86,7 @@ export default function Register() {
         flexDirection: { xs: "column", md: "row" },
       }}
     >
-      {/* LEFT SIDE IMAGE */}
+     
       <Box
         sx={{
           flex: 1,
@@ -98,7 +98,7 @@ export default function Register() {
         }}
       />
 
-      {/* RIGHT SIDE CONTENT */}
+     
       <Box
         sx={{
           flex: 1,
@@ -110,8 +110,7 @@ export default function Register() {
           p: 4,
         }}
       >
-        {/* Welcome Text */}
-        {/* Welcome Text */}
+        
         <Box textAlign="center" mb={3}>
           <Typography
             variant="h3"
@@ -127,7 +126,7 @@ export default function Register() {
           </Typography>
         </Box>
 
-        {/* Registration Form */}
+        
         <Card sx={{ width: 400, p: 2, borderRadius: 3 }}>
           <CardContent>
             <Box
@@ -228,7 +227,7 @@ export default function Register() {
                 {selector.loading ? "Registering..." : "Register"}
               </Button>
             </Box>
-            {/* Login Redirect */}
+           
             <Box
               sx={{
                 mt: 2,

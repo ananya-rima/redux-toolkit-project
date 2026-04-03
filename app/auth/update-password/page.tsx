@@ -30,7 +30,7 @@ export default function UpdatePasswordPage() {
   });
 
   useEffect(() => {
-    // If success, redirect to login
+   
     if (selector.success) {
       toast.success("Password updated successfully");
       dispatch(clearUpdateState());
